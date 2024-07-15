@@ -1,0 +1,25 @@
+-- First Step: Create these four columns in the fact table "Sales"
+
+* Sales : 
+     Sales = Sales[Unit Selling Price]*Sales[Order Quantity]
+
+* Profit : 
+     Profit = Sales[Sales]-Sales[Total Cost]
+
+* Profit Margin : 
+     Profit Margin = DIVIDE(Sales[Profit],Sales[Sales],0)
+
+* Total Cost :
+     Total Cost = Sales[Unit Cost]*Sales[Order Quantity]
+
+
+-- Now create all measures we need in this Dashboard (PY: Previous Year, CY: Current Year):
+
+Sales_Measure = SUM(Sales[Sales])
+Sales PY = CALCULATE('Sales'[Sales_Measure],SAMEPERIODLASTYEAR('Date'[Date]))
+Profit_Measure = SUM(Sales[Profit]) 
+Profit vs LY % = [Profit Vs LY]/[Profit_Measure]
+Profit Vs LY = [Profit_Measure]- [Profit LY]
+Profit_Margin_Measure = DIVIDE([Profit_Measure],[Sales_Measure],0)
+Products Sold = SUM(Sales[Order Quantity])
+Profit LY = CALCULATE(Sales[Profit_Measure], SAMEPERIODLASTYEAR('Date'[Date]))
